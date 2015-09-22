@@ -12,11 +12,11 @@ import java.util.concurrent.ThreadFactory;
 public final class NioEventLoopGroup extends MultiThreadEventLoopGroup {
 
     public NioEventLoopGroup() {
-        this(0, new DefaultThreadFactory("network-nio-eventloop", Thread.MAX_PRIORITY));
+        this(0, new DefaultThreadFactory("lighty-nio-eventloop", Thread.MAX_PRIORITY));
     }
 
     public NioEventLoopGroup(int nThreads) {
-        this(nThreads, new DefaultThreadFactory("network-nio-eventloop", Thread.MAX_PRIORITY));
+        this(nThreads, new DefaultThreadFactory("lighty-nio-eventloop", Thread.MAX_PRIORITY));
     }
 
     public NioEventLoopGroup(int nThreads, Executor executor) {

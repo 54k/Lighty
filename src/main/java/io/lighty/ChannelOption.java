@@ -40,9 +40,6 @@ public final class ChannelOption<T> extends AbstractConstant<ChannelOption<T>> {
     public static final ChannelOption<Integer> READ_SPIN_COUNT = valueOf("READ_SPIN_COUNT");
     public static final ChannelOption<Integer> CONNECT_TIMEOUT_MILLIS = valueOf("CONNECT_TIMEOUT_MILLIS");
 
-    public static final ChannelOption<Integer> RUDP_PROTOCOL_MAGIC = valueOf("RUDP_PROTOCOL_MAGIC");
-    public static final ChannelOption<Integer> RUDP_KEEP_ALIVE_PERIOD_MILLIS = valueOf("RUDP_KEEP_ALIVE_PERIOD_MILLIS");
-
     private ChannelOption(int id, String name) {
         super(id, name);
     }

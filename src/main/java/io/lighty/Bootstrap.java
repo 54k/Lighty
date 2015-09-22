@@ -7,12 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 public final class Bootstrap implements Cloneable {
@@ -208,14 +203,15 @@ public final class Bootstrap implements Cloneable {
         return new DefaultFutureGroup<>(futures);
     }
 
-    public Bootstrap childOption(ChannelOption<Object> channelOption, Object value) {
+    @SuppressWarnings("unchecked")
+    public <T> Bootstrap childOption(ChannelOption<T> channelOption, T value) {
         if (channelOption == null) {
             throw new IllegalArgumentException("channelOption");
         }
         if (value == null) {
             throw new IllegalArgumentException("value");
         }
-        childOptions.put(channelOption, value);
+        childOptions.put((ChannelOption<Object>) channelOption, value);
         return this;
     }
 
