@@ -22,7 +22,13 @@ public final class LightyServer {
     public LightyServer(InetSocketAddress from, InetSocketAddress to) {
         this.from = from;
         serverBootstrap = newBootstrap(NioServerSocketChannel.class, SERVER_GROUP);
-        serverBootstrap.addChildHandler(new ChannelConnector(to, newBootstrap(NioSocketChannel.class, CLIENT_GROUP)));
+        serverBootstrap.addChildHandler(new ChannelInitializer() {
+            @Override
+            protected void initialize(Channel channel) {
+                channel.config().setAutoRead(false);
+                channel.pipeline().addLast(new ChannelConnector(to, newBootstrap(NioSocketChannel.class, CLIENT_GROUP)));
+            }
+        });
     }
 
     private static Bootstrap newBootstrap(Class<? extends Channel> channelClass, NioEventLoopGroup eventLoopGroup) {
@@ -51,11 +57,14 @@ public final class LightyServer {
             Channel ch = clientFactory.newChannel();
             ch.pipeline().addLast(new ForwardingProxyHandler(channel));
             channel.pipeline().addLast(new ForwardingProxyHandler(ch));
-            try {
-                ch.connect(to).sync();
-            } catch (InterruptedException ignore) {
-                channel.close();
-            }
+            ch.connect(to).addListener(future -> {
+                if (future.isSuccess()) {
+                    channel.config().setAutoRead(true);
+                    channel.read();
+                } else {
+                    channel.close();
+                }
+            });
         }
     }
 
